@@ -37,10 +37,12 @@
             this.XyzUrlTextBox = new System.Windows.Forms.TextBox();
             this.ShopIndexerStatusLabel = new System.Windows.Forms.Label();
             this.XyzUrlLabel = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.ActivateButton = new System.Windows.Forms.Button();
             this.PoemarketsUrlLabel = new System.Windows.Forms.Label();
             this.PoemarketsUrlTextBox = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.SaveButton = new System.Windows.Forms.Button();
+            this.LoadButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // poeStatusTimer
@@ -99,16 +101,6 @@
             this.XyzUrlLabel.TabIndex = 0;
             this.XyzUrlLabel.Text = "poe.xyz.is URL:";
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(66, 249);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(166, 26);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "by jhovgaard (ingame: DexOfDux)\r\nj@jhovgaard.dk";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // ActivateButton
             // 
             this.ActivateButton.Location = new System.Drawing.Point(20, 181);
@@ -135,11 +127,43 @@
             this.PoemarketsUrlTextBox.Size = new System.Drawing.Size(261, 20);
             this.PoemarketsUrlTextBox.TabIndex = 1;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(66, 339);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(166, 26);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "by jhovgaard (ingame: DexOfDux)\r\nj@jhovgaard.dk";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // SaveButton
+            // 
+            this.SaveButton.Location = new System.Drawing.Point(19, 230);
+            this.SaveButton.Name = "SaveButton";
+            this.SaveButton.Size = new System.Drawing.Size(261, 45);
+            this.SaveButton.TabIndex = 9;
+            this.SaveButton.Text = "Save";
+            this.SaveButton.UseVisualStyleBackColor = true;
+            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+            // 
+            // LoadButton
+            // 
+            this.LoadButton.Location = new System.Drawing.Point(19, 281);
+            this.LoadButton.Name = "LoadButton";
+            this.LoadButton.Size = new System.Drawing.Size(261, 43);
+            this.LoadButton.TabIndex = 10;
+            this.LoadButton.Text = "Load";
+            this.LoadButton.UseVisualStyleBackColor = true;
+            this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(298, 298);
+            this.ClientSize = new System.Drawing.Size(298, 374);
+            this.Controls.Add(this.LoadButton);
+            this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.PoemarketsUrlLabel);
             this.Controls.Add(this.PoemarketsUrlTextBox);
             this.Controls.Add(this.ActivateButton);
@@ -170,10 +194,12 @@
         private System.Windows.Forms.TextBox XyzUrlTextBox;
         private System.Windows.Forms.Label ShopIndexerStatusLabel;
         private System.Windows.Forms.Label XyzUrlLabel;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button ActivateButton;
         private System.Windows.Forms.Label PoemarketsUrlLabel;
         private System.Windows.Forms.TextBox PoemarketsUrlTextBox;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button SaveButton;
+        private System.Windows.Forms.Button LoadButton;
     }
 }
 

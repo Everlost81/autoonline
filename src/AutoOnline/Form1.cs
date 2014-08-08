@@ -5,8 +5,10 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using System.Web.Script.Serialization;
 
 namespace AutoOnline
 {
@@ -207,6 +209,38 @@ namespace AutoOnline
             XyzUrlTextBox.ResetBackColor();
             
             ActivateButton.Text = !activated ? "Activate" : "Deactive";
+        }
+
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            string marketsPath = GetMarketsFilePath();
+            File.Create(marketsPath).Dispose();
+
+            MarketPaths marketPaths = new MarketPaths();
+            marketPaths.PoeMarket = PoemarketsUrlTextBox.Text;
+            marketPaths.PoeXyz = XyzUrlTextBox.Text;
+            
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            File.WriteAllText(marketsPath, serializer.Serialize(marketPaths));
+        }
+
+        private void LoadButton_Click(object sender, EventArgs e)
+        {
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            MarketPaths marketPaths = serializer.Deserialize<MarketPaths>(File.ReadAllText(GetMarketsFilePath()));
+            PoemarketsUrlTextBox.Text = marketPaths.PoeMarket;
+            XyzUrlTextBox.Text = marketPaths.PoeXyz;
+        }
+
+        private string GetMarketsFilePath()
+        {
+            return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\markets.txt";
+        }
+
+        private class MarketPaths 
+        {
+            public string PoeMarket;
+            public string PoeXyz;
         }
     }
 }
