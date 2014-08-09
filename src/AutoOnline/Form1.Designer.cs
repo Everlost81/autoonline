@@ -42,7 +42,9 @@
             this.PoemarketsUrlTextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.SaveButton = new System.Windows.Forms.Button();
-            this.LoadButton = new System.Windows.Forms.Button();
+            this.AccountNames = new System.Windows.Forms.ComboBox();
+            this.Account = new System.Windows.Forms.Label();
+            this.DeleteButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // poeStatusTimer
@@ -78,7 +80,7 @@
             // 
             // XyzUrlTextBox
             // 
-            this.XyzUrlTextBox.Location = new System.Drawing.Point(20, 144);
+            this.XyzUrlTextBox.Location = new System.Drawing.Point(20, 165);
             this.XyzUrlTextBox.Name = "XyzUrlTextBox";
             this.XyzUrlTextBox.Size = new System.Drawing.Size(261, 20);
             this.XyzUrlTextBox.TabIndex = 2;
@@ -95,7 +97,7 @@
             // XyzUrlLabel
             // 
             this.XyzUrlLabel.AutoSize = true;
-            this.XyzUrlLabel.Location = new System.Drawing.Point(17, 128);
+            this.XyzUrlLabel.Location = new System.Drawing.Point(20, 149);
             this.XyzUrlLabel.Name = "XyzUrlLabel";
             this.XyzUrlLabel.Size = new System.Drawing.Size(81, 13);
             this.XyzUrlLabel.TabIndex = 0;
@@ -103,7 +105,7 @@
             // 
             // ActivateButton
             // 
-            this.ActivateButton.Location = new System.Drawing.Point(20, 181);
+            this.ActivateButton.Location = new System.Drawing.Point(20, 194);
             this.ActivateButton.Name = "ActivateButton";
             this.ActivateButton.Size = new System.Drawing.Size(261, 43);
             this.ActivateButton.TabIndex = 3;
@@ -114,15 +116,15 @@
             // PoemarketsUrlLabel
             // 
             this.PoemarketsUrlLabel.AutoSize = true;
-            this.PoemarketsUrlLabel.Location = new System.Drawing.Point(17, 75);
+            this.PoemarketsUrlLabel.Location = new System.Drawing.Point(20, 110);
             this.PoemarketsUrlLabel.Name = "PoemarketsUrlLabel";
-            this.PoemarketsUrlLabel.Size = new System.Drawing.Size(171, 13);
+            this.PoemarketsUrlLabel.Size = new System.Drawing.Size(114, 13);
             this.PoemarketsUrlLabel.TabIndex = 8;
-            this.PoemarketsUrlLabel.Text = "Poemarkets.com Seller Page URL:";
+            this.PoemarketsUrlLabel.Text = "Poemarkets.com URL:";
             // 
             // PoemarketsUrlTextBox
             // 
-            this.PoemarketsUrlTextBox.Location = new System.Drawing.Point(20, 91);
+            this.PoemarketsUrlTextBox.Location = new System.Drawing.Point(20, 126);
             this.PoemarketsUrlTextBox.Name = "PoemarketsUrlTextBox";
             this.PoemarketsUrlTextBox.Size = new System.Drawing.Size(261, 20);
             this.PoemarketsUrlTextBox.TabIndex = 1;
@@ -130,7 +132,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(66, 339);
+            this.label4.Location = new System.Drawing.Point(67, 240);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(166, 26);
             this.label4.TabIndex = 7;
@@ -139,30 +141,51 @@
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(19, 230);
+            this.SaveButton.Location = new System.Drawing.Point(182, 86);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(261, 45);
-            this.SaveButton.TabIndex = 9;
+            this.SaveButton.Size = new System.Drawing.Size(40, 21);
+            this.SaveButton.TabIndex = 4;
             this.SaveButton.Text = "Save";
             this.SaveButton.UseVisualStyleBackColor = true;
             this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
-            // LoadButton
+            // AccountNames
             // 
-            this.LoadButton.Location = new System.Drawing.Point(19, 281);
-            this.LoadButton.Name = "LoadButton";
-            this.LoadButton.Size = new System.Drawing.Size(261, 43);
-            this.LoadButton.TabIndex = 10;
-            this.LoadButton.Text = "Load";
-            this.LoadButton.UseVisualStyleBackColor = true;
-            this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
+            this.AccountNames.FormattingEnabled = true;
+            this.AccountNames.Location = new System.Drawing.Point(20, 86);
+            this.AccountNames.Name = "AccountNames";
+            this.AccountNames.Size = new System.Drawing.Size(156, 21);
+            this.AccountNames.TabIndex = 0;
+            this.AccountNames.SelectedIndexChanged += new System.EventHandler(this.AccountNames_Select);
+            this.AccountNames.Enter += new System.EventHandler(this.AccountNames_Focus);
+            // 
+            // Account
+            // 
+            this.Account.AutoSize = true;
+            this.Account.Location = new System.Drawing.Point(20, 70);
+            this.Account.Name = "Account";
+            this.Account.Size = new System.Drawing.Size(50, 13);
+            this.Account.TabIndex = 12;
+            this.Account.Text = "Account:";
+            // 
+            // DeleteButton
+            // 
+            this.DeleteButton.Location = new System.Drawing.Point(228, 86);
+            this.DeleteButton.Name = "DeleteButton";
+            this.DeleteButton.Size = new System.Drawing.Size(53, 21);
+            this.DeleteButton.TabIndex = 5;
+            this.DeleteButton.Text = "Delete";
+            this.DeleteButton.UseVisualStyleBackColor = true;
+            this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(298, 374);
-            this.Controls.Add(this.LoadButton);
+            this.ClientSize = new System.Drawing.Size(298, 272);
+            this.Controls.Add(this.DeleteButton);
+            this.Controls.Add(this.Account);
+            this.Controls.Add(this.AccountNames);
             this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.PoemarketsUrlLabel);
             this.Controls.Add(this.PoemarketsUrlTextBox);
@@ -199,7 +222,9 @@
         private System.Windows.Forms.TextBox PoemarketsUrlTextBox;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button SaveButton;
-        private System.Windows.Forms.Button LoadButton;
+        private System.Windows.Forms.ComboBox AccountNames;
+        private System.Windows.Forms.Label Account;
+        private System.Windows.Forms.Button DeleteButton;
     }
 }
 

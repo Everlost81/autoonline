@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using System.Web.Script.Serialization;
+using System.Collections.Generic;
 
 namespace AutoOnline
 {
@@ -20,6 +21,14 @@ namespace AutoOnline
         }
 
         private bool activated = false;
+        private Dictionary<string, MarketUrls> accounts;
+        private const string missingAccountName = "Enter an account name!";
+
+        private class MarketUrls
+        {
+            public string PoeMarket;
+            public string PoeXyz;
+        }
 
         private void UpdateStatus(object source = null, EventArgs eventArgs = null)
         {
@@ -121,12 +130,28 @@ namespace AutoOnline
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            XyzUrlTextBox.Text = Properties.Settings.Default.OnlineLink;
-            PoemarketsUrlTextBox.Text = Properties.Settings.Default.PoemarketsUrl;
+            string savedAccounts = Properties.Settings.Default.Accounts;
+
+            if (savedAccounts == String.Empty)
+            {
+                accounts = new Dictionary<string, MarketUrls>();
+            }
+            else 
+            {
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                accounts = serializer.Deserialize<Dictionary<string, MarketUrls>>(savedAccounts);
+                
+                foreach (var account in accounts)
+                {
+                    AccountNames.Items.Add(account.Key);
+                }
+
+                AccountNames.SelectedIndex = 0;                
+            }
+            
             UpdateStatus();
             poeStatusTimer.Tick += UpdateStatus;
             poeStatusTimer.Start();
-            
         }
 
         private void ActivateButton_Click(object sender, EventArgs e)
@@ -193,10 +218,6 @@ namespace AutoOnline
                     PoemarketsUrlTextBox.Enabled = true;
                     return;
                 }
-                
-                Properties.Settings.Default.OnlineLink = XyzUrlTextBox.Text;
-                Properties.Settings.Default.PoemarketsUrl = PoemarketsUrlTextBox.Text;
-                Properties.Settings.Default.Save();
             }
             else
             {
@@ -211,36 +232,94 @@ namespace AutoOnline
             ActivateButton.Text = !activated ? "Activate" : "Deactive";
         }
 
+        private void AccountNames_Focus(object sender, EventArgs e)
+        {
+            if (AccountNames.BackColor == Color.Red)
+            {
+                AccountNames.BackColor = Color.White;
+                AccountNames.Text = String.Empty;
+            }
+        }
+
+        private void AccountNames_Select(object sender, EventArgs e)
+        {
+            string accountName = AccountNames.Text;
+
+            if (String.IsNullOrWhiteSpace(accountName))
+            {
+                MissingAccountNameError();
+                return;
+            }
+
+            PoemarketsUrlTextBox.Text = accounts[accountName].PoeMarket;
+            XyzUrlTextBox.Text = accounts[accountName].PoeXyz;
+        }
+
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            string marketsPath = GetMarketsFilePath();
-            File.Create(marketsPath).Dispose();
+            string accountName = AccountNames.Text;
 
-            MarketPaths marketPaths = new MarketPaths();
-            marketPaths.PoeMarket = PoemarketsUrlTextBox.Text;
-            marketPaths.PoeXyz = XyzUrlTextBox.Text;
+            if (String.IsNullOrWhiteSpace(accountName))
+            {
+                MissingAccountNameError();
+                return;
+            }
+
+            MarketUrls marketUrls = new MarketUrls();
+            marketUrls.PoeMarket = PoemarketsUrlTextBox.Text;
+            marketUrls.PoeXyz = XyzUrlTextBox.Text;
+
+            if (accounts.ContainsKey(accountName))
+            {
+                accounts[accountName] = marketUrls;
+            }
+            else
+            {
+                accounts.Add(accountName, marketUrls);
+            }
+
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            Properties.Settings.Default.Accounts = serializer.Serialize(accounts);
+            Properties.Settings.Default.Save();
+
+            if (!AccountNames.Items.Contains(accountName))
+            {
+                AccountNames.Items.Add(accountName);
+            }
+        }
+
+        private void DeleteButton_Click(object sender, EventArgs e)
+        {
+            string accountName = AccountNames.Text;
+
+            if (String.IsNullOrWhiteSpace(accountName))
+            {
+                MissingAccountNameError();
+                return;
+            }
+
+            accounts.Remove(accountName);
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            Properties.Settings.Default.Accounts = serializer.Serialize(accounts);
+            Properties.Settings.Default.Save();
+            AccountNames.Items.Remove(accountName);
             
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            File.WriteAllText(marketsPath, serializer.Serialize(marketPaths));
+            if (AccountNames.Items.Count > 0)
+            {
+                AccountNames.SelectedIndex = 0;
+            }
+            else
+            {
+                AccountNames.Text = String.Empty;
+                PoemarketsUrlTextBox.Text = String.Empty;
+                XyzUrlTextBox.Text = String.Empty;
+            }
         }
 
-        private void LoadButton_Click(object sender, EventArgs e)
+        private void MissingAccountNameError()
         {
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            MarketPaths marketPaths = serializer.Deserialize<MarketPaths>(File.ReadAllText(GetMarketsFilePath()));
-            PoemarketsUrlTextBox.Text = marketPaths.PoeMarket;
-            XyzUrlTextBox.Text = marketPaths.PoeXyz;
-        }
-
-        private string GetMarketsFilePath()
-        {
-            return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\markets.txt";
-        }
-
-        private class MarketPaths 
-        {
-            public string PoeMarket;
-            public string PoeXyz;
+            AccountNames.BackColor = Color.Red;
+            AccountNames.Text = missingAccountName;
         }
     }
 }

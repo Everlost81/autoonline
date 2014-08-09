@@ -2,10 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AutoOnline.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="OnlineLink" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="PoemarketsUrl" Type="System.String" Scope="User">
+    <Setting Name="Accounts" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>
